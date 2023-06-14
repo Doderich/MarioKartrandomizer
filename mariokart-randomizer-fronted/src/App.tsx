@@ -14,8 +14,7 @@ import {
   colors,
 } from "@mui/material";
 import { getRandomKartCombination } from "./api-service";
-const assetsURL =
-  "https://github.com/Doderich/MarioKartrandomizer/blob/main/mariokart-randomizer-fronted/src/assets";
+const assetsURL = ".\\assets\\";
 
 function App() {
   const [players, setPlayers] = useState([1]);
@@ -101,7 +100,7 @@ function App() {
 function PlayerCard(props: { id: number }) {
   const [combination, setCombination] = useState({
     characters: { name: "" },
-    kart: { name: "" },
+    kart: { name: "", type: "" },
     tire: { name: "" },
     glider: { name: "" },
   });
@@ -123,10 +122,11 @@ function PlayerCard(props: { id: number }) {
         <Grid container spacing={1}>
           <Grid item xs={6} sm={6}>
             <Typography variant="subtitle1">Character</Typography>
-            <img
-              src={`${assetsURL}/characters/combination.characters.name]`}
-              className="w-24 h-24"
-            />
+            <Box sx={{ width: 1, height: "auto" }}>
+              <img
+                src={`${assetsURL}/characters/${combination.characters.name}.png`}
+              />
+            </Box>
             <Typography variant="subtitle1">
               {combination.characters.name}
             </Typography>
@@ -134,15 +134,14 @@ function PlayerCard(props: { id: number }) {
           <Grid item xs={6} sm={6}>
             <Typography variant="subtitle1">Kart</Typography>
             <img
-              src={`${assetsURL}/karts/${combination.kart.name}`}
-              className="w-24 h-24"
+              src={`${assetsURL}/vehicle/karts/120px-${combination.kart.name}MK8.png`}
             />
             <Typography variant="subtitle1">{combination.kart.name}</Typography>
           </Grid>
           <Grid item xs={6} sm={6}>
             <Typography variant="subtitle1">Tire</Typography>
             <img
-              src={`${assetsURL}/tires/${combination.tire.name}`}
+              src={`${assetsURL}/vehicle/tires/120px-${combination.tire.name} TiresMK8.png`}
               className="w-24 h-24"
             />
             <Typography variant="subtitle1">{combination.tire.name}</Typography>
@@ -150,7 +149,7 @@ function PlayerCard(props: { id: number }) {
           <Grid item xs={6} sm={6}>
             <Typography variant="subtitle1">Glider</Typography>
             <img
-              src={`${assetsURL}/gliders/${combination.glider.name}`}
+              src={`${assetsURL}/vehicle/gliders/120px-${combination.glider.name} GliderMK8.png`}
               className="w-24 h-24"
             />
             <Typography variant="subtitle1">
