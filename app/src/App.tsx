@@ -8,13 +8,10 @@ import { getRandomKartCombination } from "./lib/kartUtils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AspectRatio } from "./components/ui/aspect-ratio";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
-import useCheckMobileScreen from "./lib/useCheckMobile";
 
 function App() {
   const [players, setPlayers] = useState(1);
   const [refresh, setRefresh] = useState(false);
-
-  const isMobile = useCheckMobileScreen();
 
   useEffect(() => {}, [players]);
 
@@ -66,7 +63,7 @@ function App() {
         </div>
       </>
       <div className="grid p-2 w-full h-1/2 lg:grid-cols-2 lg:gap-3">
-        {Array.from(Array(players), (player, index) => {
+        {Array.from(Array(players), (_player, index) => {
           return (
             <div
               className="mb-2 w-full lg:h-1/2 lg:row-span-1 lg:col-span-1"
