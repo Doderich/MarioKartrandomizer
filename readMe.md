@@ -1,7 +1,7 @@
 # Mariokart Randomizer
 
 ## Live Demo
-To try this Mariokart 8 Randomizer, please visit [www.malte-budig.de/mariokart](www.malte-budig.de/mariokart). 🎮🔀
+To try this Mariokart 8 Randomizer, please visit [www.malte-budig.de/mariokart](https://malte-budig.de/mariokart). 🎮🔀
 
 ## Goal
 The goal of this project is to add more fun to Mariokart 8 gameplay. 🌟 After playing for some time, I found myself always selecting the same combination of characters and vehicle parts, which became repetitive. To address this, I created this website to provide myself and others with the opportunity to experience new combinations. 🔄🎌
