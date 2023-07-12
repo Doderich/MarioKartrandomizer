@@ -7,66 +7,47 @@ import { getRandomKartCombination } from "./lib/kartUtils";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AspectRatio } from "./components/ui/aspect-ratio";
-
-interface Player {
-  id: number;
-  kartCombination: KartCombination;
-}
+import { ArrowPathIcon } from "@heroicons/react/24/outline";
+import useCheckMobileScreen from "./lib/useCheckMobile";
 
 function App() {
-  const [players, setPlayers] = useState<Player[]>([]);
+  const [players, setPlayers] = useState(1);
+  const [refresh, setRefresh] = useState(false);
+
+  const isMobile = useCheckMobileScreen();
+
+  useEffect(() => {}, [players]);
 
   const addPlayer = () => {
-    const newPlayer: Player = {
-      id: players.length + 1,
-      kartCombination: getRandomKartCombination(),
-    };
-    setPlayers([...players, newPlayer]);
+    setPlayers(players + 1);
   };
 
   const removePlayer = () => {
-    setPlayers([...players.filter((player) => player.id !== players.length)]);
+    if (players > 1) {
+      setPlayers(players - 1);
+    }
   };
 
-  const changePlayerCombination = (playerId: number) => {
-    const newPlayers = players.map((player) => {
-      if (player.id === playerId) {
-        return {
-          id: player.id,
-          kartCombination: getRandomKartCombination(),
-        };
-      }
-      return player;
-    });
-    setPlayers(newPlayers);
-  };
-
-  const randomizeAll = () => {
-    const newPlayers = players.map((player) => {
-      return {
-        id: player.id,
-        kartCombination: getRandomKartCombination(),
-      };
-    });
-    setPlayers(newPlayers);
-  };
+  function randomizeAll() {
+    setRefresh(!refresh);
+  }
 
   const handleRandomize = () => {
     randomizeAll();
   };
 
   return (
-    <>
-      <header className=" w-full bg-secondary h-14 justify-center items-center flex">
+    <div className="w-full h-full">
+      <header className=" w-full bg-secondary h-20 justify-center items-center flex">
         <h1 className="text-3xl font-bold tracking-tight lg:text-5xl">
           Mario Kart 8 Randomizer
         </h1>
       </header>
       <Separator />
-      <div>
-        <div className=" flex w-full justify-evenly items-center p-3">
+      <>
+        <div className=" flex w-full h-20 justify-evenly items-center p-3 md:justify-center md:gap-2 lg:justify-center lg:gap-2">
           <span className=" text-2xl">
-            {players.length === 1 ? " 1 Player" : `${players.length} Players`}{" "}
+            {players === 1 ? " 1 Player" : `${players} Players`}{" "}
           </span>
           <div>
             <Button onClick={() => addPlayer()} variant="ghost">
@@ -78,28 +59,29 @@ function App() {
           </div>
         </div>
         <Separator />
-        <div className="flex w-full justify-center items-center h-fit p-3">
-          <Button className="h-14 p-3" onClick={handleRandomize}>
+        <div className="flex w-full justify-center h-20 items-center p-3">
+          <Button className="h-full p-3" onClick={handleRandomize}>
             <span className=" text-4xl text-center">Randomize</span>
           </Button>
         </div>
-        <div className=" bg-primary px-2">
-          {players.map((player, index) => {
-            return (
-              <PlayerCard
-                key={index}
-                id={player.id}
-                combination={player.kartCombination}
-              />
-            );
-          })}
-        </div>
+      </>
+      <div className="grid p-2 w-full h-1/2 lg:grid-cols-2 lg:gap-3">
+        {Array.from(Array(players), (player, index) => {
+          return (
+            <div
+              className="mb-2 w-full lg:h-1/2 lg:row-span-1 lg:col-span-1"
+              key={index}
+            >
+              <PlayerCard id={index + 1} refresh={refresh} />
+            </div>
+          );
+        })}
       </div>
-    </>
+    </div>
   );
 }
 
-function PlayerCard(props: { id: number; combination: KartCombination }) {
+function PlayerCard(props: { id: number; refresh: any }) {
   const [combination, setCombination] = useState<KartCombination>({
     character: { name: "", imageURL: "", id: 0, selectable: false, type: "" },
     body: { name: "", type: "", imageURL: "", id: 0, selectable: false },
@@ -107,37 +89,100 @@ function PlayerCard(props: { id: number; combination: KartCombination }) {
     glider: { name: "", type: "", imageURL: "", id: 0, selectable: false },
     description: "",
   });
-
   useEffect(() => {
-    setCombination(props.combination);
-  }, []);
+    setCombination(getRandomKartCombination());
+  }, [props.refresh]);
+
+  function reRoll() {
+    setCombination(getRandomKartCombination());
+  }
 
   return (
-    <Card>
+    <Card className="">
       <CardHeader>
-        <CardTitle title={`Player ${props.id}`} />
+        <CardTitle>
+          <span className=" text-3xl">Player {props.id}</span>
+        </CardTitle>
       </CardHeader>
       <CardContent>
-        <div>
-          <span>Character</span>
-          <img src={`/${combination.tire.imageURL}`} />
-          <span>{combination.character.name}</span>
-        </div>
-        <div>
-          <span>Kart</span>
-          <img src={`/${combination.tire.imageURL}`} />
-          <span>{combination.body.name}</span>
-        </div>
-        <div>
-          <span>Tire</span>
-          <img src={`/${combination.tire.imageURL}`} className="w-24 h-24" />
-          <span>{combination.tire.imageURL}</span>
-          <span>{combination.tire.name}</span>
-        </div>
-        <div>
-          <span>Glider</span>
-          <img src={`/${combination.tire.imageURL}`} className="w-24 h-24" />
-          <span>{combination.glider.name}</span>
+        <div className="grid grid-cols-1 grid-rows-7 gap-2 md:grid-cols-2 md:grid-rows-3 lg:grid-cols-2 lg:grid-rows-3 ">
+          <div className="grid grid-cols-2">
+            <div className="grid grid-rows-2">
+              <span className="font-semibold text-xl">Character</span>
+              <span className="font-medium text-lg">
+                {combination.character.name}
+              </span>
+            </div>
+            <div className="w-3/4 h-3/4  md:w-1/2 md:h-1/2 lg:w-1/3 lg:h-1/3">
+              <AspectRatio ratio={1}>
+                <img
+                  src={combination.character.imageURL}
+                  alt="Image couldn't be loaded"
+                  className="rounded-md object-cover"
+                />
+              </AspectRatio>
+            </div>
+          </div>
+          <Separator className=" row-span-2 md:hidden lg:hidden " />
+          <div className="grid grid-cols-2">
+            <div className=" grid grid-rows-2 ">
+              <span className="font-semibold text-xl">Vehicle</span>
+              <span className="font-medium text-lg">
+                {combination.body.name}
+              </span>
+            </div>
+            <div className="w-3/4 h-3/4 md:w-1/2 md:h-1/2 lg:w-1/3 lg:h-1/3">
+              <AspectRatio ratio={1}>
+                <img
+                  src={combination.body.imageURL}
+                  alt="Image couldn't be loaded"
+                  className="rounded-md object-cover"
+                />
+              </AspectRatio>
+            </div>
+          </div>
+          <Separator className=" row-span-2 md:hidden lg:hidden" />
+          <div className="grid grid-cols-2">
+            <div className="grid grid-rows-2">
+              <span className="font-semibold text-xl">Tire</span>
+              <span className="font-medium text-lg">
+                {combination.tire.name}
+              </span>
+            </div>
+            <div className="w-3/4 h-3/4 md:w-1/2 md:h-1/2 lg:w-1/3 lg:h-1/3">
+              <AspectRatio ratio={1}>
+                <img
+                  src={combination.tire.imageURL}
+                  alt="Image couldn't be loaded"
+                  className="rounded-md object-cover"
+                />
+              </AspectRatio>
+            </div>
+          </div>
+          <Separator className=" row-span-2 md:hidden lg:hidden" />
+          <div className="grid grid-cols-2">
+            <div className=" grid grid-rows-2">
+              <span className="font-semibold text-xl">Glider</span>
+              <span className="font-medium text-lg">
+                {combination.glider.name}
+              </span>
+            </div>
+            <div className="w-3/4 h-3/4 md:w-1/2 md:h-1/2 lg:w-1/3 lg:h-1/3">
+              <AspectRatio ratio={1}>
+                <img
+                  src={combination.glider.imageURL}
+                  alt="Image couldn't be loaded"
+                  className="rounded-md object-cover"
+                />
+              </AspectRatio>
+            </div>
+          </div>
+          <Separator className=" row-span-2 md:hidden lg:hidden" />
+          <div className=" justify-center items-center flex w-full md:col-span-2 lg:col-span-2 ">
+            <Button onClick={reRoll} variant="outline" className="w-1/2 ">
+              <ArrowPathIcon className="h-6 w-6 text-black" />
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>

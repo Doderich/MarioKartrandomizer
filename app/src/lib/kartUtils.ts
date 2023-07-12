@@ -1,13 +1,9 @@
 // Kart Utils
-let data: any;
+import dataimport from "../assets/imageMap.json";
 
-async function fetchData() {
-  const response = await fetch("../imageMap.json");
-  data = await response.json();
-  console.log(data);
-}
-
-fetchData();
+const data: {
+  [key: string]: any;
+} = dataimport;
 
 export function getRandomKartCombination(): KartCombination {
   if (!data) {
@@ -26,13 +22,13 @@ export function getRandomKartCombination(): KartCombination {
     tire: getRandomKartPart("tires"),
     glider: getRandomKartPart("gliders"),
   };
-
-  console.log(randomKartCombination);
-
   return randomKartCombination;
 }
 
 export function getRandomKartPart(partType: string): KartPart {
+  if (!data[partType]) {
+    return { name: "", type: "", imageURL: "", id: 0, selectable: false };
+  }
   const randomKartPart =
     data[partType][Math.floor(Math.random() * data[partType].length)];
   return randomKartPart;
