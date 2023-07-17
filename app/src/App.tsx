@@ -8,12 +8,11 @@ import { getRandomKartCombination } from "./lib/kartUtils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AspectRatio } from "./components/ui/aspect-ratio";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
+import FilterBox from "./components/filterBox";
 
 function App() {
   const [players, setPlayers] = useState(1);
   const [refresh, setRefresh] = useState(false);
-
-  useEffect(() => {}, [players]);
 
   const addPlayer = () => {
     setPlayers(players + 1);
@@ -41,27 +40,28 @@ function App() {
         </h1>
       </header>
       <Separator />
-      <>
-        <div className=" flex w-full h-20 justify-evenly items-center p-3 md:justify-center md:gap-2 lg:justify-center lg:gap-2">
-          <span className=" text-2xl">
-            {players === 1 ? " 1 Player" : `${players} Players`}{" "}
-          </span>
-          <div>
-            <Button onClick={() => addPlayer()} variant="ghost">
-              <PlusIcon className="h-6 w-6 text-black" />
-            </Button>
-            <Button onClick={() => removePlayer()} variant="ghost">
-              <MinusIcon className="h-6 w-6 text-black" />
-            </Button>
-          </div>
-        </div>
-        <Separator />
-        <div className="flex w-full justify-center h-20 items-center p-3">
-          <Button className="h-full p-3" onClick={handleRandomize}>
-            <span className=" text-4xl text-center">Randomize</span>
+      <div className=" flex w-full h-20 justify-evenly items-center p-3 md:justify-center md:gap-2 lg:justify-center lg:gap-2">
+        <span className=" text-2xl">
+          {players === 1 ? " 1 Player" : `${players} Players`}{" "}
+        </span>
+        <div>
+          <Button onClick={() => addPlayer()} variant="ghost">
+            <PlusIcon className="h-6 w-6 text-black" />
+          </Button>
+          <Button onClick={() => removePlayer()} variant="ghost">
+            <MinusIcon className="h-6 w-6 text-black" />
           </Button>
         </div>
-      </>
+      </div>
+      <Separator />
+      <div className="flex w-full justify-center h-20 items-center p-3 gap-10">
+        <Button className="h-full p-3" onClick={handleRandomize}>
+          <span className=" text-4xl text-center">Randomize</span>
+        </Button>
+      </div>
+      <div className="flex w-full justify-center h-20 items-center p-3 gap-10">
+        <FilterBox />
+      </div>
       <div className="grid p-2 w-full h-1/2 lg:grid-cols-2 lg:gap-3">
         {Array.from(Array(players), (_player, index) => {
           return (
