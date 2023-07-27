@@ -54,7 +54,8 @@
       "name": "Birdo",
       "id": 8,
       "selectable": true,
-      "type": "medium"
+      "type": "medium",
+      "dlc": "true"
     },
     {
       "imageURL": "\\assets\\characters\\yoshi_icon.png",
@@ -398,7 +399,8 @@
       "name": "Gold Standart",
       "id": 14,
       "selectable": true,
-      "type": "kart"
+      "type": "kart",
+      "golden": "true"
     },
     {
       "imageURL": "\\assets\\vehicles\\karts\\glaKart.png",
@@ -697,7 +699,8 @@
       "imageURL": "\\assets\\tires\\goldTiresTire.png",
       "name": "Gold Tires",
       "id": 18,
-      "selectable": true
+      "selectable": true,
+      "golden": "true"
     },
     {
       "imageURL": "\\assets\\tires\\glaTiresTire.png",
@@ -795,7 +798,8 @@
       "imageURL": "\\assets\\gliders\\goldGliderGlider.png",
       "name": "Gold Glider",
       "id": 12,
-      "selectable": true
+      "selectable": true,
+      "golden": "true"
     },
     {
       "imageURL": "\\assets\\gliders\\hylianKiteGlider.png",
